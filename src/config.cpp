@@ -12,7 +12,7 @@ extern bool nightModeSleep;
 extern String cityName;
 
 void setupWiFi() {
-    preferences.begin("weather", false);
+    preferences.begin("weather", true);
     String ssid = preferences.getString("ssid", "");
     String password = preferences.getString("password", "");
     preferences.end();
