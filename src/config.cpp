@@ -82,6 +82,7 @@ void startConfigPortal() {
         int currentNightInterval = preferences.getInt("night_interval", 60);
         int currentNightStart = preferences.getInt("night_start", 22);
         int currentNightEnd = preferences.getInt("night_end", 5);
+        int currentTimezoneOffsetHours = preferences.getInt("tz_offset_hours", TIMEZONE_OFFSET_HOURS);
         preferences.end();
 
         String html = "<!DOCTYPE html><html><head>";
@@ -116,6 +117,7 @@ void startConfigPortal() {
         html += "  var nightInt=parseInt(document.forms['config']['night_interval'].value);";
         html += "  var nightStart=parseInt(document.forms['config']['night_start'].value);";
         html += "  var nightEnd=parseInt(document.forms['config']['night_end'].value);";
+        html += "  var tzOffsetHours=parseInt(document.forms['config']['tz_offset_hours'].value);";
         html += "  if(ssid==''){alert('WiFi SSID is required');return false;}";
         html += "  if(city==''){alert('City name is required');return false;}";
         html += "  if(dayInt<5||dayInt>120){alert('Day refresh must be 5-120 minutes');return false;}";
@@ -171,6 +173,8 @@ void startConfigPortal() {
         html += "<input name='lat' placeholder='Latitude (e.g., -36.8485)' pattern='^-?\\d+\\.?\\d*$' value='" + currentLat + "'>";
         html += "<input name='lon' placeholder='Longitude (e.g., 174.7633)' pattern='^-?\\d+\\.?\\d*$' value='" + currentLon + "'>";
         html += "<div class='note'>Leave blank to auto-lookup from city name</div>";
+        html += "<label>Timezone offset hours:</label><input type='number' name='tz_offset_hours' value='" + String(currentTimezoneOffsetHours) + "' min='-24' max='24' required>";
+        html += "<div class='note'>For UTC+2 you would put 2, for UTC-10 put -10 and so on.</div>";
         html += "</div>";
 
         // Display Preferences
@@ -227,6 +231,7 @@ void startConfigPortal() {
         int nightInterval = server.arg("night_interval").toInt();
         int nightStart = server.arg("night_start").toInt();
         int nightEnd = server.arg("night_end").toInt();
+        int timezoneOffsetHours = server.arg("tz_offset_hours").toInt();
 
         if (ssid.length() == 0 || city.length() == 0) {
             server.send(400, "text/html",
@@ -281,6 +286,7 @@ void startConfigPortal() {
         preferences.putInt("night_interval", nightInterval);
         preferences.putInt("night_start", nightStart);
         preferences.putInt("night_end", nightEnd);
+        preferences.putInt("tz_offset_hours", timezoneOffsetHours);
 
         if (lat.length() > 0 && lon.length() > 0) {
             preferences.putString("latitude", lat);
