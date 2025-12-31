@@ -10,6 +10,6 @@ void setupWiFi();
 void startConfigPortal();
 
 // Load preferences
-void loadPreferences(float &latitude, float &longitude, String &cityName);
+void loadPreferences(float &latitude, float &longitude, String &cityName, int &timezoneOffsetHours);
 
 #endif // CONFIG_H

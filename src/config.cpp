@@ -321,10 +321,11 @@ void startConfigPortal() {
     WiFi.mode(WIFI_STA);
 }
 
-void loadPreferences(float &latitude, float &longitude, String &cityName) {
+void loadPreferences(float &latitude, float &longitude, String &cityName, int &timezoneOffsetHours) {
     preferences.begin("weather", true);
     String latStr = preferences.getString("latitude", String(COORD_NOT_SET));
     String lonStr = preferences.getString("longitude", String(COORD_NOT_SET));
+    timezoneOffsetHours = preferences.getInt("tz_offset_hours", TIMEZONE_OFFSET_HOURS);
     cityName = preferences.getString("city", DEFAULT_CITY);
     String tempUnit = preferences.getString("tempunit", "F");
     useCelsius = (tempUnit == "C");

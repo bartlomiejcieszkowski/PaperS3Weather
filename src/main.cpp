@@ -85,16 +85,21 @@ void setup() {
 
     setupWiFi();
 
-    // Configure time via NTP if connected
+    
     if (WiFi.status() == WL_CONNECTED) {
-        configTime(TIMEZONE_OFFSET_HOURS * 3600, 0, NTP_SERVER_1, NTP_SERVER_2);
-        Serial.println("Time configured via NTP");
+
     }
 
-    // Load preferences and fetch weather
+    
     if (WiFi.status() == WL_CONNECTED) {
+        // Load preferences and fetch weather
         float latitude, longitude;
-        loadPreferences(latitude, longitude, cityName);
+        int timezoneOffsetHours;
+        loadPreferences(latitude, longitude, cityName, timezoneOffsetHours);
+
+        // Configure time via NTP if connected
+        configTime(timezoneOffsetHours * 3600, 0, NTP_SERVER_1, NTP_SERVER_2);
+        Serial.println("Time configured via NTP");
 
         Serial.printf("Fetching weather for: %.4f, %.4f (%s)\n",
                      latitude, longitude, cityName.c_str());
